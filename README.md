@@ -94,6 +94,8 @@ Example:
 
 `./Hintra_Win.exe -u C:/Project/example 5 4 0.1 50 4`
 
+*Note: the `PhylogenySet` folder should be unzipped to the same folder as the executable.*
+
 
 ## Reference
 {to be added}
