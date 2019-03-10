@@ -39,7 +39,7 @@ Tree_Prior<-function(parvec){
 
 ##  MAIN CODE  ##
 
-K=3 # The number of mutations
+K=6 # The number of mutations
 
 results=matrix(0,nrow = (K+1)^(K-1),ncol = K)
 pv=rep(0,K)
