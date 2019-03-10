@@ -11,11 +11,33 @@ We introduce a method called Hintra for intra-tumor heterogeneity detection. Hin
 
 
 ## Inputs
-{to be completed}
+Assume that the name of the dataset is `example`. Then, the input files include:
+
+* `example.Rcounts`: This file contains reference read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the reference read count of a gene. The order of genes is consistent for all samples (lines). This file should not contain any zeros. For the variants that does not exist in a sample, the reference read count can be set to an arbitrary number (e.g. 100).
+
+* `example.Vcounts`: This file contains variant read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the variant read count of a gene. The order of genes is consistent for all samples (lines).
+
+* The folder `PhylogenySet`: This folder contains the set of all valid phylogenetic structures (i.e. structures without branching root node) for different numbers of mutations. It contains files named as `ParentVectors_K-?.txt`, where `?` indicates the number of mutations. Currently, this folder contains files for between 1 and 6 mutations. Larger topologies can be generated using the provided R code `TopologyEnumerator.R`. Each file contains one or more lines with each line representing a phylogenetic tree in the parent vector format (i.e. a sequence of numbers each indicating the parent of the corresponding node with 0 being the root node).
+
+* `example.margs` (if applicable): This file contains pre-processed marginal likelihood data for tumor samples. This will be used if available. Otherwise, Hintra will produce this file as described later. Each line of this tab-separated file is dedicated to one tumor and is a sequence of floating values. Each value is a marginal log-likelihood of a tree topology. The order of values follows the order of topologies provided in the folder `PhylogenySet`.
+
+* `example.maxs` (if applicable): Similar to `example.margs`, but contains maximal log-likelihoods.
 
 
 ## Outputs
-{to be completed}
+For the given inputs for a dataset named `example`, Hintra produces the following outputs:
+
+* `example.margs` (if applicable): If not already existing, or if the command line argument `-u` is used as described in section **Usage**, this file will be computed. See the **Inputs** section above for the description of contents.
+
+* `example.maxs` (if applicable): If not already existing, or if the command line argument `-u` is used as described in section **Usage**, this file will be computed. See the **Inputs** section above for the description of contents.
+
+*Note: If either of the files `example.margs` or `example.maxs` does not exist, both will be regenarated by Hintra*
+
+* `example.trees`: This tab-separated file contains the detected phylogenetic trees. Each line is dedicated to one tumor in the same order as provided in the input. For each tumor, the file shows the corresponding phylogenetic tree in the parent vector format. The values of vector elements indicate the index of the parent gene (following the input order). The germline root node is referred to by `0` and non-mutated genes are indicated by `-1`. For example, a line with values `3  -1  0  3` is a tree with germline root getting a mutation at gene 3 and then the resulting cell getting simultaneous mutations at genes 1 and 4.
+
+* `example.facts`:
+
+* `example.post`:
 
 
 ## Usage
