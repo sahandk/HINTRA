@@ -1,8 +1,6 @@
 # HINTRA
 An algorithm for collaborative intra-tumor heterogeneity detection
 
-*Note: This code uses OpenMP API*
-
 
 ## Abstract
 Despite the remarkable advances in sequencing and computational techniques, noise in the data and complexity of the underlying biological mechanisms render deconvolution of the phylogenetic relationships between cancer mutations difficult. Besides that, the majority of the existing datasets consist of bulk sequencing data of single tumor sample of an individual. Accurate inference of the phylogenetic order of mutations is particularly challenging in these cases and the existing methods are faced with several theoretical limitations. To overcome these limitations, new methods are required for integrating and harnessing the full potential of the existing data.
@@ -68,7 +66,7 @@ Ancestors  Support   Support (Discont'd)  2     1     3     4
 
 ## Usage
 
-We provide both source code (`Hintra.cpp`) and executable files. The executable `Hintra_LLVM.exe` file is compiled using [LLVM](https://llvm.org/) to be portable to Linux and Unix systems. The `Hintra_Win.exe` file is for Windows OS. If any of these executables does not work on your system, you should compile the source code on your system.
+We provide both source code (`Hintra.cpp`) and executable files. The executable `Hintra_LLVM.exe` file is compiled using [LLVM](https://llvm.org/) to be portable to Linux and Unix systems. The `Hintra_Win.exe` file is for Windows OS. If any of these executables does not work on your system, you should compile the source code on your system. *Please note that this code uses OpenMP API and the compiler might need to be informed of this.*
 
 The comman for using Hintra is as follows:
 
