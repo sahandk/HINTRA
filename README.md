@@ -76,7 +76,7 @@ The comman for using Hintra is as follows:
 
 * `<X>` can be either `LLVM` or `Win`.
 
-* `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files.
+* `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files. This is useful when changing the `<delta>` parameter or when the content of the read count files changes without their names being changed.
 
 * `<path_to_input>` is the complete path to the input dataset. For example if the `example.Rcounts` and `example.Vcounts` files are in path `C:/Project/`, then `<path_to_input>` should be set to `C:/Project/example`. Please note that no extenion is used for this argument and the `.Rcounts` and `.Vcounts` files (as well as `.margs` and `.maxs` files if they are provided) should have the same name (e.g. `example`) and be in the same folder indicated by `<path_to_input>`.
 
