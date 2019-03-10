@@ -35,9 +35,19 @@ For the given inputs for a dataset named `example`, Hintra produces the followin
 
 * `example.trees`: This tab-separated file contains the detected phylogenetic trees. Each line is dedicated to one tumor in the same order as provided in the input. For each tumor, the file shows the corresponding phylogenetic tree in the parent vector format. The values of vector elements indicate the index of the parent gene (following the input order). The germline root node is referred to by `0` and non-mutated genes are indicated by `-1`. For example, a line with values `3  -1  0  3` is a tree with germline root getting a mutation at gene 3 and then the resulting cell getting simultaneous mutations at genes 1 and 4.
 
-* `example.facts`:
+* `example.facts`: This tab-separated file contains the learned parameter *Beta*. A possible example of this file is shown below. The file contains multiple columns. The first three columns are *Ancestors*, *Support*, and *Support (Discont'd)*. Column *Ancestors* indicate the *ancestory sets* found based on the inputs. Every ancestry set starts with 0 (the root) and the consequent mutations/genes follow by order of occurrence and sparated by semi-colon (`;`). The second column *Support* is the support or evidence for the corresponding ancestry set. The third column *Support (Discont'd)* is the support or evidence for the corresponding ancestry set without having any consequent mutations (i.e. when the last mutation of the ancstry set is a leaf). The following columns each indicate one of the input genes. The values below these columns show the evidence for the corresponding ancestry set resulting in/being followed by a mutation in those genes. For more details on how these evidences are computed see the definition of parameter *Beta* in the manuscript provided at the **Reference** section.
 
-* `example.post`:
+```
+Ancestors  Support   Support (Discont'd)  2     1     3     4
+0;3;1;     50        1.3                  20.8  0     0     27.9
+0;3;4;     12.4      3.5                  3.5   5.4   0     0
+0;3;       59        0                    1.4   48.7  0     8.9
+0;         122       0                    50.1  5.7   59    5.2
+...
+```
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Note: In this example, the spaces are adjusted for convenience. In real outputs the values are separated by a single tab. The numbers are also rounded to one decimal in this example. In real outputs the values are double-floating point values.*
+
+* `example.post`: The structure of this file is very similar to `example.facts` except that it does not contain the *Support (Discont'd)* column and the evidences are computed based on the maximum *a posteriori* estimation trees provided in `example.trees` instead of being computed using a Bayesian approach (integrating over all possible topologies). In other words, this file contains summary statistics based on the inferred trees in file `example.trees`.
 
 
 ## Usage
