@@ -13,9 +13,25 @@ We introduce a method called Hintra for intra-tumor heterogeneity detection. Hin
 ## Inputs
 Assume that the name of the dataset is `example`. Then, the input files include:
 
-* `example.Rcounts`: This file contains reference read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the reference read count of a gene. The order of genes is consistent for all samples (lines). This file should not contain any zeros. For the variants that does not exist in a sample, the reference read count can be set to an arbitrary number (e.g. 100).
+* `example.Rcounts`: This file contains reference read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the reference read count of a gene. The order of genes is consistent for all samples (lines). This file should not contain any zeros. For the variants that does not exist in a sample, the reference read count can be set to an arbitrary number (e.g. 100). An example file for 5 samples and 4 genes is provided below:
 
-* `example.Vcounts`: This file contains variant read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the variant read count of a gene. The order of genes is consistent for all samples (lines).
+```
+70  100 30  150
+100 100 51 90
+95 82 75  59
+0 39 100 100
+55 201 100 100
+```
+
+* `example.Vcounts`: This file contains variant read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the variant read count of a gene. The order of genes is consistent for all samples (lines). Below is an example corresponding to the above `example.Rcounts`:
+
+```
+10  0 25  50
+0 0 49 60
+25 33 11  6
+0 35 0 0
+55 35 13 0
+```
 
 * The folder `PhylogenySet`: This folder contains the set of all valid phylogenetic structures (i.e. structures without branching root node) for different numbers of mutations. It contains files named as `ParentVectors_K-?.txt`, where `?` indicates the number of mutations. Currently, this folder contains files for between 1 and 6 mutations. Larger topologies can be generated using the provided R code `TopologyEnumerator.R`. Each file contains one or more lines with each line representing a phylogenetic tree in the parent vector format (i.e. a sequence of numbers each indicating the parent of the corresponding node with 0 being the root node).
 
@@ -35,7 +51,7 @@ For the given inputs for a dataset named `example`, Hintra produces the followin
 
 * `example.trees`: This tab-separated file contains the detected phylogenetic trees. Each line is dedicated to one tumor in the same order as provided in the input. For each tumor, the file shows the corresponding phylogenetic tree in the parent vector format. The values of vector elements indicate the index of the parent gene (following the input order). The germline root node is referred to by `0` and non-mutated genes are indicated by `-1`. For example, a line with values `3  -1  0  3` is a tree with germline root getting a mutation at gene 3 and then the resulting cell getting simultaneous mutations at genes 1 and 4.
 
-* `example.facts`: This tab-separated file contains the learned parameter *Beta*. A possible example of this file is shown below. The file contains multiple columns. The first three columns are *Ancestors*, *Support*, and *Support (Discont'd)*. Column *Ancestors* indicate the *ancestory sets* found based on the inputs. Every ancestry set starts with 0 (the root) and the consequent mutations/genes follow by order of occurrence and sparated by semi-colon (`;`). The second column *Support* is the support or evidence for the corresponding ancestry set. The third column *Support (Discont'd)* is the support or evidence for the corresponding ancestry set without having any consequent mutations (i.e. when the last mutation of the ancstry set is a leaf). The following columns each indicate one of the input genes. The values below these columns show the evidence for the corresponding ancestry set resulting in/being followed by a mutation in those genes. For more details on how these evidences are computed see the definition of parameter *Beta* in the manuscript provided at the **Reference** section.
+* `example.facts`: This tab-separated file contains the learned parameter *Beta*. A possible example of this file is shown below. The file contains multiple columns. The first three columns are *'Ancestors'*, *'Support'*, and *'Support (Discont'd)'*. Column *'Ancestors'* indicate the *ancestory sets* found based on the inputs. Every ancestry set starts with 0 (the root) and the consequent mutations/genes follow by order of occurrence and sparated by semi-colon (`;`). The second column *'Support'* is the support or evidence for the corresponding ancestry set. The third column *'Support (Discont'd)'* is the support or evidence for the corresponding ancestry set without having any consequent mutations (i.e. when the last mutation of the ancstry set is a leaf). The following columns each indicate one of the input genes. The values below these columns show the evidence for the corresponding ancestry set resulting in/being followed by a mutation in those genes. For more details on how these evidences are computed see the definition of parameter *Beta* in the manuscript provided at the **Reference** section.
 
 ```
 Ancestors  Support   Support (Discont'd)  2     1     3     4
@@ -51,4 +67,33 @@ Ancestors  Support   Support (Discont'd)  2     1     3     4
 
 
 ## Usage
-{to be completed}
+
+We provide both source code (`Hintra.cpp`) and executable files. The executable `Hintra_LLVM.exe` file is compiled using [LLVM](https://llvm.org/) to be portable to Linux and Unix systems. The `Hintra_Win.exe` file is for Windows OS. If any of these executables does not work on your system, you should compile the source code on your system.
+
+The comman for using Hintra is as follows:
+
+`./Hintra_<X>.exe [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
+
+* `<X>` can be either `LLVM` or `Win`.
+
+* `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files.
+
+* `<path_to_input>` is the complete path to the input dataset. For example if the `example.Rcounts` and `example.Vcounts` files are in path `C:/Project/`, then `<path_to_input>` should be set to `C:/Project/example`. Please note that no extenion is used for this argument and the `.Rcounts` and `.Vcounts` files (as well as `.margs` and `.maxs` files if they are provided) should have the same name (e.g. `example`).
+
+* `<no_samples>` is the number of samples which is equal to the number of lines in the `.Rcounts` or `.Vcounts` files.
+
+* `<no_genes>` is the number of genes which is equal to the number of elements in each line of the `.Rcounts` or `.Vcounts` files.
+
+* `<delta>` is the discretization parameter (see the reference).
+
+* `<EM_iterations>` is the maximum number of iterations of the Expectation Maximization algorithm.
+
+* `<no_cores>` is the number of CPU cores used for parallelization.
+
+Example:
+
+`./Hintra_Win.exe -u C:/Project/example 5 4 0.1 50 4`
+
+
+## Reference
+{to be added}
