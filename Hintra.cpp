@@ -3,7 +3,9 @@
 #include<fstream>
 #include<string>
 #include<vector>
-#include<math.h>
+#include<cmath>
+#include<climits>
+#include<cfloat>
 #include<random>
 #include<time.h>
 #include<omp.h>
@@ -16,9 +18,9 @@ double SumTwoLogs(double a, double b){
 	double maxLog = log(DBL_MAX);
 	double minLog = log(DBL_MIN);
 	maxLog -= l2;
-	if (isinf(a))
+	if (std::isinf(a))
 		a = DBL_MIN_EXP;
-	if (isinf(b))
+	if (std::isinf(b))
 		b = DBL_MIN_EXP;
 	if (a < minLog)
 		shift = minLog - a;
@@ -30,7 +32,7 @@ double SumTwoLogs(double a, double b){
 		shift = maxLog - b;
 
 	double s = exp(a + shift) + exp(b + shift);
-	if (isinf(log(s)))
+	if (std::isinf(log(s)))
 		cout << "inf" << endl;
 	return log(s) - shift;
 }
