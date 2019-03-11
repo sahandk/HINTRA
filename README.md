@@ -66,13 +66,17 @@ Ancestors  Support   Support (Discont'd)  2     1     3     4
 
 ## Usage
 
-We provide both source code (`Hintra.cpp`) and executable files. The executable `Hintra_LLVM.exe` file is compiled using [LLVM](https://llvm.org/) to be portable to Linux and Unix systems. The `Hintra_Win.exe` file is for Windows OS. If any of these executables does not work on your system, you should compile the source code on your system. *Please note that this code uses OpenMP API and the compiler might need to be informed of this.*
+We provide both source code (`Hintra.cpp`) and executable files. The executable `Hintra-Lin.exe` file is compiled using
 
-The comman for using Hintra is as follows:
+`g++ -std=c++11 -fopenmp -lm Hintra.cpp -o Hintra-Lin`
 
-`./Hintra_<X>.exe [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
+on linux. The `Hintra-Win.exe` file is the Windows executable produced with Visual Studio version 15. If any of these executables does not work on your system, you should compile the source code on your system. *Please note that this code uses OpenMP API and this library should be linked (e.g. with `-fopenmp`) when compiling.*
 
-* `<X>` can be either `LLVM` or `Win`.
+The command for using Hintra is as follows:
+
+`./Hintra-<X>.exe [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
+
+* `<X>` can be either `Lin` or `Win` depending on operating system.
 
 * `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files. This is useful when changing the `<delta>` parameter or when the content of the read count files changes without their names being changed.
 
@@ -90,7 +94,7 @@ The comman for using Hintra is as follows:
 
 Example:
 
-`./Hintra_Win.exe -u C:/Project/example 5 4 0.1 50 4`
+`./Hintra-Win.exe -u C:/Project/example 5 4 0.1 50 4`
 
 *Note: the `PhylogenySet` folder should be unzipped to the same folder as the executable.*
 
