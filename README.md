@@ -92,7 +92,7 @@ The command for using Hintra is as follows:
 
 * `<no_cores>` is the number of CPU cores used for parallelization.
 
-Example:
+**Example:**
 
 `./Hintra-Win.exe -u C:/Project/example 5 4 0.1 50 4`
 
