@@ -70,7 +70,7 @@ We provide both source code (`Hintra.cpp`) and executable files. The executable 
 
 `clang++ -std=c++11 -fopenmp -lm Hintra.cpp -o Hintra-Lin`
 
-on Linux. The `Hintra-Win.exe` file is the Windows executable produced with Visual Studio version 15. If any of these executables does not work on your system, you should compile the source code on your system. On Linux, if you do not have access to *clang*, you can replace `clang++` in the above command with `g++`, assuming that you have `g++` installed. *Please note that this code uses OpenMP API and this library should be linked (e.g. with `-fopenmp`) when compiling.*
+on Linux. The `Hintra-Win.exe` file is the Windows executable produced with Visual Studio version 15. If any of these executables does not work on your system, you should compile the source code on your system. On Linux, if you do not have access to *clang*, you can replace `clang++` in the above command with `g++`, assuming that you have *g++* installed. *Please note that this code uses OpenMP API and this library should be linked (e.g. with `-fopenmp`) when compiling.*
 
 The command for using Hintra is as follows:
 
