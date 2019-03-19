@@ -108,7 +108,7 @@ The command for using Hintra is as follows:
 
 `./Hintra-Lin -u C:/Project/example 5 4 0.1 50 4`
 
-**Note: the `PhylogenySet` folder should be unzipped to the same folder as the executable.**
+**Note: the `PhylogenySet` folder should be unzipped to the current working directory (the same folder as the executable in the above example).**
 
 
 ## Reference
