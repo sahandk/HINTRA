@@ -12,7 +12,7 @@
 
 using namespace std;
 
-double SumTwoLogs(double a, double b){
+double SumTwoLogs(double a, double b) {
 	double l2 = log(2);
 	double shift = 0;
 	double maxLog = log(DBL_MAX);
@@ -38,7 +38,7 @@ double SumTwoLogs(double a, double b){
 }
 
 
-int SearchString(vector<string>& vector, string element){
+int SearchString(vector<string>& vector, string element) {
 	for (int i = 0; i < vector.size(); i++)
 		if (vector[i] == element)
 			return i;
@@ -46,13 +46,13 @@ int SearchString(vector<string>& vector, string element){
 	return -1;
 }
 
-bool BinarySearchString(vector<string>& vector, string element, int start, int end, int& pos){
-	if (start > end){
+bool BinarySearchString(vector<string>& vector, string element, int start, int end, int& pos) {
+	if (start > end) {
 		pos = start;
 		return false;
 	}
 	int m = (start + end) / 2;
-	if (vector[m] == element){
+	if (vector[m] == element) {
 		pos = m;
 		return true;
 	}
@@ -63,7 +63,7 @@ bool BinarySearchString(vector<string>& vector, string element, int start, int e
 }
 
 
-double BinomialDensityLog(int a, int b, double p){
+double BinomialDensityLog(int a, int b, double p) {
 	if ((p == 0 && a == 0) || (p == 1 && b == 0))
 		return 0;
 
@@ -72,17 +72,17 @@ double BinomialDensityLog(int a, int b, double p){
 }
 
 
-int* NodeOrder(int* parentVector, int noNodes){
+int* NodeOrder(int* parentVector, int noNodes) {
 	int* ord = new int[noNodes];
 	int size = 0;
 	for (int i = 0; i < noNodes; i++)
-		if (parentVector[i] == 0){
+		if (parentVector[i] == 0) {
 			ord[size] = i + 1;
 			size++;
 		}
 
 	int cur = 0;
-	while (size < noNodes){
+	while (size < noNodes) {
 		for (int i = 0; i < noNodes; i++)
 			if (parentVector[i] == ord[cur])
 				ord[size++] = i + 1;
@@ -93,7 +93,7 @@ int* NodeOrder(int* parentVector, int noNodes){
 }
 
 
-double* ToTheta(double* pis, int noNodes, int* parentVector, int* order){
+double* ToTheta(double* pis, int noNodes, int* parentVector, int* order) {
 	double* thetas = new double[noNodes + 1];
 
 	for (int i = 0; i <= noNodes; i++)
@@ -105,7 +105,7 @@ double* ToTheta(double* pis, int noNodes, int* parentVector, int* order){
 }
 
 
-double MarginalGivenTree(int noNodes, int* parentVector, int* refs, int* vars, double precision, int* orderByLevels, int mutCount, double& maxProb){
+double MarginalGivenTree(int noNodes, int* parentVector, int* refs, int* vars, double precision, int* orderByLevels, int mutCount, double& maxProb) {
 	double* ys = new double[mutCount + 1];
 	double parts = 1 / precision;
 	int* placeHolders = new int[mutCount];
@@ -115,18 +115,18 @@ double MarginalGivenTree(int noNodes, int* parentVector, int* refs, int* vars, d
 	double sum = DBL_MIN_EXP;
 	maxProb = -1 * DBL_MAX;
 	int counter = 0;
-	while (true){
+	while (true) {
 		ys[0] = (placeHolders[0] - 0) / parts;
 		for (int i = 1; i < mutCount; i++)
 			ys[i] = (placeHolders[i] - placeHolders[i - 1]) / parts;
 		ys[mutCount] = (parts - placeHolders[mutCount - 1]) / parts;
 
 		double *thetas = ToTheta(ys, mutCount, parentVector, orderByLevels);
-		
+
 		counter++;
 		double prob = 0;
 		int ind = 0;
-		for (int i = 0; i < noNodes; i++){
+		for (int i = 0; i < noNodes; i++) {
 			if (vars[i] == 0)
 				continue;
 			prob = prob + BinomialDensityLog(vars[i], vars[i] + refs[i], thetas[ind + 1] / 2);
@@ -145,7 +145,7 @@ double MarginalGivenTree(int noNodes, int* parentVector, int* refs, int* vars, d
 				break;
 
 		//next
-		if (x >= 0){
+		if (x >= 0) {
 			int value = placeHolders[x] + 1;
 			for (int i = x; i < mutCount; i++)
 				placeHolders[i] = value;
@@ -164,7 +164,7 @@ double MarginalGivenTree(int noNodes, int* parentVector, int* refs, int* vars, d
 
 
 double SearchForTreeMax(int* currentParentVector, int mutCount, int cayley, double* treePriors,
-	int** allParentVects, double* maxProbs, int& maxL){
+	int** allParentVects, double* maxProbs, int& maxL) {
 	int* bestParentVector = new int[mutCount];
 	int ind;
 	for (int i = 0; i < mutCount; i++)
@@ -180,7 +180,7 @@ double SearchForTreeMax(int* currentParentVector, int mutCount, int cayley, doub
 
 		currentLikelihood = treePriors[index] + maxProbs[index];// +TreePriorLog(currentParentVector, mutCount, 0.1);
 
-		if (currentLikelihood > bestLikelihood){
+		if (currentLikelihood > bestLikelihood) {
 			for (int i = 0; i < mutCount; i++)
 				bestParentVector[i] = currentParentVector[i];
 			bestLikelihood = currentLikelihood;
@@ -198,7 +198,7 @@ double SearchForTreeMax(int* currentParentVector, int mutCount, int cayley, doub
 
 
 double IntegrateOverTopologies(int cayley, double* treePriors,
-	double* marginalProbs, double* maxProbs, double& maxLikelihood){
+	double* marginalProbs, double* maxProbs, double& maxLikelihood) {
 
 	double minDblExp = log(DBL_MIN);
 	double maxDblExp = log(DBL_MAX);
@@ -218,7 +218,7 @@ double IntegrateOverTopologies(int cayley, double* treePriors,
 			addedValue = minDblExp + logCayley - marglikelihoods[index];
 		if (marglikelihoods[index] > maxMarg)
 			maxMarg = marglikelihoods[index];
-		if (tempMaxLH > maxLikelihood){
+		if (tempMaxLH > maxLikelihood) {
 			maxLikelihood = tempMaxLH;
 		}
 		//delete[] orderByLevels;
@@ -236,7 +236,7 @@ double IntegrateOverTopologies(int cayley, double* treePriors,
 }
 
 
-struct CauseEffect{
+struct CauseEffect {
 	string cause;
 	vector<string> effects;
 	int causeInd;
@@ -244,11 +244,11 @@ struct CauseEffect{
 };
 
 
-void DFSParVec(int* mutSet, int size, int* parVector, int cur, vector<int> curCause, vector<CauseEffect>& ces){
+void DFSParVec(int* mutSet, int size, int* parVector, int cur, vector<int> curCause, vector<CauseEffect>& ces) {
 	int ind;
 	if (cur == 0)
 		curCause.push_back(0);
-	else{
+	else {
 		for (ind = 0; ind < curCause.size(); ind++)
 			if (mutSet[cur - 1] < curCause[ind])
 				break;
@@ -261,7 +261,7 @@ void DFSParVec(int* mutSet, int size, int* parVector, int cur, vector<int> curCa
 	ace.cause = strCause;
 	bool hasEffect = false;
 	for (int i = 0; i < size; i++)
-		if (parVector[i] == cur){
+		if (parVector[i] == cur) {
 			hasEffect = true;
 			string strEffect = to_string(mutSet[i]);
 			ace.effects.push_back(strEffect);
@@ -270,7 +270,7 @@ void DFSParVec(int* mutSet, int size, int* parVector, int cur, vector<int> curCa
 	ces.push_back(ace);
 }
 
-void TreeToFactors(int noMuts, int size, bool* binaryProfile, int* parentVector, vector<CauseEffect>& ces){
+void TreeToFactors(int noMuts, int size, bool* binaryProfile, int* parentVector, vector<CauseEffect>& ces) {
 	ces.clear();
 	int* mutSet = new int[size];
 	int index = 0;
@@ -288,22 +288,31 @@ void TreeToFactors(int noMuts, int size, bool* binaryProfile, int* parentVector,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char* argv[]){
-	double precision = 0.1, epsilon = 1e-10, alpha=1;
-	int numth = 4, nr = 0, nc = 0, EMIters = 100;
-	string refFile, varFile, outtrees, /*outll, outcf,*/ outfacts, outpost, outmargf, outmaxf, pathToFile;
+int main(int argc, char* argv[]) {
+	double precision = 0.05, epsilon = 1e-10, alpha = 1;
+	int numth = 6, nr = 0, nc = 0, EMIters = 200;
+	string refFile, varFile, sampFile, outtrees, outfacts, outpost, outmargf, outmaxf, pathToFile;
 	bool shouldUpdate = false;
 
-	if (argc > 1){
+	refFile = pathToFile + ".Rcounts";
+	varFile = pathToFile + ".Vcounts";
+	sampFile = pathToFile + ".Tids";
+	outfacts = pathToFile + ".facts";
+	outpost = pathToFile + ".post";
+	outtrees = pathToFile + ".trees";
+	outmargf = pathToFile + ".margs";
+	outmaxf = pathToFile + ".maxs";
+
+	if (argc > 1) {
 		string str(argv[1]);
-		if (str == "-u"){
+		if (str == "-u") {
 			shouldUpdate = true;
-			if (argc != 8){
+			if (argc != 8) {
 				cout << "Incorrect number of input arguments!" << endl;
 				exit(1);
 			}
 		}
-		else if (argc != 7){
+		else if (argc != 7) {
 			cout << "Incorrect number of input arguments!" << endl;
 			exit(1);
 		}
@@ -314,16 +323,14 @@ int main(int argc, char* argv[]){
 		cout << refFile << endl;
 		varFile = pathToFile + ".Vcounts";
 		cout << varFile << endl;
+		sampFile = pathToFile + ".Tids";
+		cout << sampFile << endl;
 		outfacts = pathToFile + ".facts";
 		cout << outfacts << endl;
 		outpost = pathToFile + ".post";
 		cout << outpost << endl;
 		outtrees = pathToFile + ".trees";
 		cout << outtrees << endl;
-		/*outll = pathToFile + ".lltrace";
-		cout << outll << endl;
-		outcf = pathToFile + ".cftrace";
-		cout << outcf << endl;*/
 		outmargf = pathToFile + ".margs";
 		cout << outmargf << endl;
 		outmaxf = pathToFile + ".maxs";
@@ -340,92 +347,88 @@ int main(int argc, char* argv[]){
 		numth = atoi(argv[6 + add]);
 		cout << numth << endl;
 	}
-	else{
+	else {
 		cout << "Incorrect number of input arguments!" << endl;
 		exit(1);
 	}
 
-	ofstream outputTrees, /*outputLL, outputCF,*/ outputFacts, outputPost;
-	outputTrees.open(outtrees);
-	//outputLL.open(outll);
-	//outputCF.open(outcf);
-	outputFacts.open(outfacts);
-	outputPost.open(outpost);
-
-	int** refs = new int*[nr];
-	int** vars = new int*[nr];
-	bool** binaryProfiles = new bool*[nr];
-	int* mutCounts = new int[nr];
-
 	//reading inputs
 	cout << "Reading the read count data..." << endl;
+	int** refs = new int*[nr];
+	int** vars = new int*[nr];
+	int* ids = new int[nr];
 	ifstream refin(refFile);
 	ifstream varin(varFile);
+	ifstream sampin(sampFile);
+	int nt = 0;
+	for (int row = 0; row < nr; row++) {
+		sampin >> ids[row];
+		if (ids[row] > nt)
+			nt = ids[row];
+	}
+	bool** binaryProfiles = new bool*[nt];
+	int* mutCounts = new int[nt];
 	string rline, vline;
-	int maxMutCount = 0;
-	for (int row = 0; row < nr; row++){
+	
+	int id = -1;
+	for (int row = 0; row < nr; row++) {
 		refs[row] = new int[nc];
 		vars[row] = new int[nc];
-		binaryProfiles[row] = new bool[nc];
-		vars[row] = new int[nc];
-		mutCounts[row] = 0;
+		if (row == 0 || ids[row] != ids[row - 1]) {
+			id++;
+			mutCounts[id] = 0;
+			binaryProfiles[id] = new bool[nc];
+			for (int col = 0; col < nc; col++)
+				binaryProfiles[id][col] = false;
+		}
+		
 		getline(refin, rline);
 		getline(varin, vline);
 		stringstream rs(rline);
 		stringstream vs(vline);
-		for (int col = 0; col < nc; col++){
+		for (int col = 0; col < nc; col++) {
 			rs >> refs[row][col];
 			vs >> vars[row][col];
-			binaryProfiles[row][col] = (vars[row][col] > 0);
-			mutCounts[row] += (vars[row][col] > 0 ? 1 : 0);
+			if (vars[row][col] > 0) {
+				mutCounts[id] += (!binaryProfiles[id][col] ? 1 : 0);
+				binaryProfiles[id][col] = true;
+			}
 		}
-		if (mutCounts[row] > maxMutCount)
-			maxMutCount = mutCounts[row];
 	}
 
-	//Topologies
-	int cayleys[] = { 1, 2, 9, 64, 625, 7776 };
+	int maxMutCount = 0;
+	for (int i = 0; i < nt; i++) {
+		if (mutCounts[i] > maxMutCount)
+			maxMutCount = mutCounts[i];
+	}
+
+	int cayleys[] = { 1, 2, 9, 64, 625, 7776, 117649, 2097152 };
 	/*int* cayleys = new int[maxMutCount];
 	for (int i = 0; i < maxMutCount; i++)
-		cayleys[i] = pow(i + 2, i);*/
-	int*** allParentVecs = new int**[maxMutCount];
-	for (int k = 0; k < maxMutCount; k++){
-		string strnc;
-		ostringstream Convert;
-		Convert << k + 1;
-		strnc = Convert.str();
-		string topfile = ".//PhylogenySet//ParentVectors_K-" + strnc + ".txt"; //******* SHOULD BE CUSTOMIZED TO YOUR DIRECTORY *******
-		ifstream topin(topfile);
-		allParentVecs[k] = new int*[cayleys[k]];
-		for (int row = 0; row < cayleys[k]; row++){
-			allParentVecs[k][row] = new int[k + 1];
-			for (int col = 0; col <= k; col++)
-				topin >> allParentVecs[k][row][col];
-		}
-	}
+		cayleys[i] = pow(i + 1, i);*/
 
 	// Combinations, Mapping, and Priors
 	cout << "Identifying the mutation combinations in all patients..." << endl;
 	vector<string> combinations;
 	vector<double*> combPriors;
 	vector<int> combSizes;
-	int* combMapping = new int[nr];
-	for (int i = 0; i < nr; i++){
+	int* combMapping = new int[nt];
+	for (int i = 0; i < nt; i++) {
 		string code;
 		int size = 0;
-		for (int j = 0; j < nc; j++){
+		for (int j = 0; j < nc; j++) {
 			code += (binaryProfiles[i][j] ? "1" : "0");
 			if (binaryProfiles[i][j])
 				size++;
 		}
 		bool found = false;
 		for (int k = 0; k < combinations.size(); k++)
-			if (combinations[k] == code){
+			if (combinations[k] == code) {
 				combMapping[i] = k;
 				found = true;
 				break;
 			}
-		if (!found){
+		if (!found) {
 			combinations.push_back(code);
 			combMapping[i] = combinations.size() - 1;
 			double* priors = new double[cayleys[size - 1]];
@@ -439,24 +442,41 @@ int main(int argc, char* argv[]){
 	int* combCounts = new int[combinations.size()];
 	for (int i = 0; i < combinations.size(); i++)
 		combCounts[i] = 0;
-	for (int i = 0; i < nr; i++)
+	for (int i = 0; i < nt; i++)
 		combCounts[combMapping[i]]++;
+
+	//Topologies
+	int*** allParentVecs = new int**[maxMutCount];
+	for (int k = 0; k < maxMutCount; k++) {
+		string strnc;
+		ostringstream Convert;
+		Convert << k + 1;
+		strnc = Convert.str();
+		string topfile = ".//PhylogenySet//ParentVectors_K-" + strnc + ".txt";
+		ifstream topin(topfile);
+		allParentVecs[k] = new int*[cayleys[k]];
+		for (int row = 0; row < cayleys[k]; row++) {
+			allParentVecs[k][row] = new int[k + 1];
+			for (int col = 0; col <= k; col++)
+				topin >> allParentVecs[k][row][col];
+		}
+	}
 
 	cout << "Breaking all possible trees into factors..." << endl;
 	vector<string> allCauses, allEffects;
 	vector<CauseEffect>** factorsPerCombinationTopology = new vector<CauseEffect>*[combinations.size()];
 	int* firstInstances = new int[combinations.size()];
-	for (int c = 0; c < combinations.size(); c++){
+	for (int c = 0; c < combinations.size(); c++) {
 		factorsPerCombinationTopology[c] = new vector<CauseEffect>[cayleys[combSizes[c] - 1]];
 		int firstInstanc = 0;
 		while (combMapping[firstInstanc++] != c);
 		firstInstanc--;
 		firstInstances[c] = firstInstanc;
-		for (int p = 0; p < cayleys[combSizes[c] - 1]; p++){
+		for (int p = 0; p < cayleys[combSizes[c] - 1]; p++) {
 			TreeToFactors(nc, mutCounts[firstInstanc], binaryProfiles[firstInstanc], allParentVecs[mutCounts[firstInstanc] - 1][p], factorsPerCombinationTopology[c][p]);
-			for (int f = 0; f < factorsPerCombinationTopology[c][p].size(); f++){
+			for (int f = 0; f < factorsPerCombinationTopology[c][p].size(); f++) {
 				int ind = SearchString(allCauses, factorsPerCombinationTopology[c][p][f].cause);
-				if (ind == -1){
+				if (ind == -1) {
 					allCauses.push_back(factorsPerCombinationTopology[c][p][f].cause);
 					factorsPerCombinationTopology[c][p][f].causeInd = allCauses.size() - 1;
 				}
@@ -464,9 +484,9 @@ int main(int argc, char* argv[]){
 					factorsPerCombinationTopology[c][p][f].causeInd = ind;
 				}
 
-				for (int e = 0; e < factorsPerCombinationTopology[c][p][f].effects.size(); e++){
+				for (int e = 0; e < factorsPerCombinationTopology[c][p][f].effects.size(); e++) {
 					ind = SearchString(allEffects, factorsPerCombinationTopology[c][p][f].effects[e]);
-					if (ind == -1){
+					if (ind == -1) {
 						allEffects.push_back(factorsPerCombinationTopology[c][p][f].effects[e]);
 						factorsPerCombinationTopology[c][p][f].effectInds.push_back(allEffects.size() - 1);
 					}
@@ -480,62 +500,72 @@ int main(int argc, char* argv[]){
 
 	// Computing Individual Marginals
 	cout << "Computing the marginal probabilities..." << endl;
-	double** marginalProbs = new double*[nr];
-	double** maxProbs = new double*[nr];
+	double** marginalProbs = new double*[nt];
+	double** maxProbs = new double*[nt];
 	ifstream inmargs(outmargf);
 	ifstream inmaxs(outmaxf);
-	if (shouldUpdate || !inmargs.good() || !inmaxs.good()){
+	if (shouldUpdate || !inmargs.good() || !inmaxs.good()) {
 		ofstream outmargs(outmargf);
 		ofstream outmaxs(outmaxf);
-		for (int r = 0; r < nr; r++){
-			marginalProbs[r] = new double[cayleys[mutCounts[r] - 1]];
-			maxProbs[r] = new double[cayleys[mutCounts[r] - 1]];
+		id = -1;
+		for (int r = 0; r < nr; r++) {
+			if (r == 0 || ids[r] != ids[r - 1]) {
+				id++;
+				marginalProbs[id] = new double[cayleys[mutCounts[id] - 1]];
+				maxProbs[id] = new double[cayleys[mutCounts[id] - 1]];
+				for (int index = 0; index < cayleys[mutCounts[id] - 1]; index++)
+					marginalProbs[id][index] = maxProbs[id][index] = 0;
+			}
+
 #pragma omp parallel for num_threads(numth)
-			for (int index = 0; index < cayleys[mutCounts[r] - 1]; index++)
-			{
-				int* currentParentVector = new int[mutCounts[r]];
+			for (int index = 0; index < cayleys[mutCounts[id] - 1]; index++){
+				int* currentParentVector = new int[mutCounts[id]];
 				int* orderByLevels;
 				cout << "sample " << r << " tree " << index << endl;
 
-				for (int i = 0; i < mutCounts[r]; i++)
-					currentParentVector[i] = allParentVecs[mutCounts[r] - 1][index][i];
-				orderByLevels = NodeOrder(currentParentVector, mutCounts[r]);
-				marginalProbs[r][index] = MarginalGivenTree(nc, currentParentVector, refs[r], vars[r], precision, orderByLevels, mutCounts[r], maxProbs[r][index]);
+				for (int i = 0; i < mutCounts[id]; i++)
+					currentParentVector[i] = allParentVecs[mutCounts[id] - 1][index][i];
+				orderByLevels = NodeOrder(currentParentVector, mutCounts[id]);
+				double tempMax;
+				marginalProbs[id][index] += MarginalGivenTree(nc, currentParentVector, refs[r], vars[r], precision, orderByLevels, mutCounts[id], tempMax);
+				maxProbs[id][index] += tempMax;
 				delete[] orderByLevels;
 				delete[] currentParentVector;
 			}//index
 
-			for (int index = 0; index < cayleys[mutCounts[r] - 1]; index++)
-			{
-				outmargs << marginalProbs[r][index] << "\t";
-				outmaxs << maxProbs[r][index] << "\t";
+			if (r == nr - 1 || ids[r + 1] != ids[r]) {
+				for (int index = 0; index < cayleys[mutCounts[id] - 1]; index++)
+				{
+					outmargs << marginalProbs[id][index] << "\t";
+					outmaxs << maxProbs[id][index] << "\t";
+				}
+				outmargs << endl;
+				outmaxs << endl;
 			}
-			outmargs << endl;
-			outmaxs << endl;
 		}//r
 	}
-	else{
-		for (int r = 0; r < nr; r++){
-			marginalProbs[r] = new double[cayleys[mutCounts[r] - 1]];
-			maxProbs[r] = new double[cayleys[mutCounts[r] - 1]];
+	else {
+		for (int id = 0; id < nt; id++) {
+			marginalProbs[id] = new double[cayleys[mutCounts[id] - 1]];
+			maxProbs[id] = new double[cayleys[mutCounts[id] - 1]];
 			//#pragma omp parallel for num_threads(numth)
-			for (int index = 0; index < cayleys[mutCounts[r] - 1]; index++)
+			for (int index = 0; index < cayleys[mutCounts[id] - 1]; index++)
 			{
-				inmargs >> marginalProbs[r][index];
-				inmaxs >> maxProbs[r][index];
+				inmargs >> marginalProbs[id][index];
+				inmaxs >> maxProbs[id][index];
 			}//index
 		}
 	}
 
-	int** currentParentVectors = new int*[nr];
-	for (int i = 0; i < nr; i++)
+	int** currentParentVectors = new int*[nt];
+	for (int i = 0; i < nt; i++)
 		currentParentVectors[i] = new int[mutCounts[i]];
 
 	double currentMargLogProb = 0, currentMaxLogProb = 0, treeMargL = 0, treeMaxL = 0;
-	double* currentMargLogProbs = new double[nr];
-	double* currentMaxLogProbs = new double[nr];
-	for (int i = 0; i < nr; i++){
-		currentMargLogProbs[i] = IntegrateOverTopologies(cayleys[mutCounts[i]-1], combPriors[combMapping[i]], marginalProbs[i], maxProbs[i], currentMaxLogProbs[i]);
+	double* currentMargLogProbs = new double[nt];
+	double* currentMaxLogProbs = new double[nt];
+	for (int i = 0; i < nt; i++) {
+		currentMargLogProbs[i] = IntegrateOverTopologies(cayleys[mutCounts[i] - 1], combPriors[combMapping[i]], marginalProbs[i], maxProbs[i], currentMaxLogProbs[i]);
 		currentMargLogProb += currentMargLogProbs[i];
 		currentMaxLogProb += currentMaxLogProbs[i];
 
@@ -556,23 +586,23 @@ int main(int argc, char* argv[]){
 	double* discCauseCounts = new double[allCauses.size()];
 	double* proposedCauseCounts = new double[allCauses.size()];
 	double* proposedDiscCauseCounts = new double[allCauses.size()];
-	for (int i = 0; i < allCauses.size(); i++){
+	for (int i = 0; i < allCauses.size(); i++) {
 		factorPriors[i] = new double[allEffects.size()];
 		//factorPriorsBar[i] = new double[allEffects.size()];
 		proposedFactorPriors[i] = new double[allEffects.size()];
 		//proposedFactorPriorsBar[i] = new double[allEffects.size()];
 	}
 
-	for (int c = 0; c < allCauses.size(); c++){
+	for (int c = 0; c < allCauses.size(); c++) {
 		causeCounts[c] = log(2 * epsilon);
 		discCauseCounts[c] = log(epsilon);
-		for (int e = 0; e < allEffects.size(); e++){
+		for (int e = 0; e < allEffects.size(); e++) {
 			factorPriors[c][e] = log(epsilon);
 		}
 	}
 
 	cout << "Learning the tree parameters..." << endl;
-	for (int trial = 0; trial < EMIters; trial++){
+	for (int trial = 0; trial < EMIters; trial++) {
 		// Reporting the current status
 		cout << trial << " (" << currentMargLogProb << ")" << endl;
 		/*outputLL << currentMargLogProb << "\t" << currentMaxLogProb << "\t" << treeMargL << "\t" << treeMaxL << endl;
@@ -587,26 +617,26 @@ int main(int argc, char* argv[]){
 		//// Updating Counts
 
 		// Resetting the Factor Priors
-		for (int c = 0; c < allCauses.size(); c++){
+		for (int c = 0; c < allCauses.size(); c++) {
 			proposedCauseCounts[c] = log(2 * epsilon);
 			proposedDiscCauseCounts[c] = log(epsilon);
-			for (int e = 0; e < allEffects.size(); e++){
+			for (int e = 0; e < allEffects.size(); e++) {
 				proposedFactorPriors[c][e] = log(epsilon);
 				//proposedFactorPriorsBar[c][e] = log(2 * epsilon);
 			}
 		}
 
 		// #pragma omp parallel for num_threads(numth)
-		for (int i = 0; i < nr; i++){
-			for (int t = 0; t < cayleys[mutCounts[i] - 1]; t++){
+		for (int i = 0; i < nt; i++) {
+			for (int t = 0; t < cayleys[mutCounts[i] - 1]; t++) {
 				vector<string> strUniqueCauses;
 				vector<int> intUniqueCauses;
 				double coef = combPriors[combMapping[i]][t] + marginalProbs[i][t] - currentMargLogProbs[i]; //confidence
 
-				for (int f = 0; f < factorsPerCombinationTopology[combMapping[i]][t].size(); f++){
+				for (int f = 0; f < factorsPerCombinationTopology[combMapping[i]][t].size(); f++) {
 					proposedCauseCounts[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd] =
 						SumTwoLogs(coef, proposedCauseCounts[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd]);
-					if (factorsPerCombinationTopology[combMapping[i]][t][f].effects.size()==0)
+					if (factorsPerCombinationTopology[combMapping[i]][t][f].effects.size() == 0)
 						proposedDiscCauseCounts[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd] =
 						SumTwoLogs(coef, proposedDiscCauseCounts[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd]);
 					/*for (int j = 0; j < allEffects.size(); j++){
@@ -615,13 +645,13 @@ int main(int argc, char* argv[]){
 							proposedFactorPriorsBar[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd][j] =
 							SumTwoLogs(coef, proposedFactorPriorsBar[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd][j]);
 					}*/
-					for (int e = 0; e < factorsPerCombinationTopology[combMapping[i]][t][f].effects.size(); e++){
+					for (int e = 0; e < factorsPerCombinationTopology[combMapping[i]][t][f].effects.size(); e++) {
 						proposedFactorPriors[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd][factorsPerCombinationTopology[combMapping[i]][t][f].effectInds[e]] =
 							SumTwoLogs(coef, proposedFactorPriors[factorsPerCombinationTopology[combMapping[i]][t][f].causeInd][factorsPerCombinationTopology[combMapping[i]][t][f].effectInds[e]]);
 					}
 				}
 			}
-		} // i < nr
+		} // i < nt
 
 		//// Normalizing the Factor Counts
 		//for (int c = 0; c < allCauses.size(); c++){
@@ -631,11 +661,11 @@ int main(int argc, char* argv[]){
 
 		// Updating the Combination Priors
 #pragma omp parallel for num_threads(numth)
-		for (int c = 0; c < combinations.size(); c++){
+		for (int c = 0; c < combinations.size(); c++) {
 			double priorSum = log(DBL_MIN);
-			for (int t = 0; t < cayleys[combSizes[c] - 1]; t++){
+			for (int t = 0; t < cayleys[combSizes[c] - 1]; t++) {
 				double prior = 0;
-				for (int f = 0; f < factorsPerCombinationTopology[c][t].size(); f++){
+				for (int f = 0; f < factorsPerCombinationTopology[c][t].size(); f++) {
 					/*for (int j = 0; j < allEffects.size(); j++){
 						int effind = stoi(allEffects[j]) - 1;
 						if (binaryProfiles[firstInstances[c]][effind])
@@ -646,7 +676,7 @@ int main(int argc, char* argv[]){
 						//log(1 - exp(proposedFactorPriors[factorsPerCombinationTopology[c][t][f].causeInd][factorsPerCombinationTopology[c][t][f].effectInds[e]]));
 				}
 
-				combPriors[c][t] = prior*alpha;
+				combPriors[c][t] = prior * alpha;
 				priorSum = SumTwoLogs(prior*alpha, priorSum);
 			}// index
 
@@ -655,7 +685,7 @@ int main(int argc, char* argv[]){
 		}// c
 
 		currentMargLogProb = currentMaxLogProb = treeMaxL = treeMargL = 0;
-		for (int i = 0; i < nr; i++){
+		for (int i = 0; i < nt; i++) {
 			currentMargLogProbs[i] = IntegrateOverTopologies(cayleys[mutCounts[i] - 1], combPriors[combMapping[i]], marginalProbs[i], maxProbs[i], currentMaxLogProbs[i]);
 			currentMargLogProb += currentMargLogProbs[i];
 			currentMaxLogProb += currentMaxLogProbs[i];
@@ -667,15 +697,15 @@ int main(int argc, char* argv[]){
 		}
 
 		// Not improved?
-		if (currentMargLogProb < prevMargLogProb){
-		//if (false){
-			// Updating the Combination Priors
+		if (currentMargLogProb < prevMargLogProb) {
+			//if (false){
+				// Updating the Combination Priors
 #pragma omp parallel for num_threads(numth)
-			for (int c = 0; c < combinations.size(); c++){
+			for (int c = 0; c < combinations.size(); c++) {
 				double priorSum = log(DBL_MIN);
-				for (int t = 0; t < cayleys[combSizes[c] - 1]; t++){
+				for (int t = 0; t < cayleys[combSizes[c] - 1]; t++) {
 					double prior = 0;
-					for (int f = 0; f < factorsPerCombinationTopology[c][t].size(); f++){
+					for (int f = 0; f < factorsPerCombinationTopology[c][t].size(); f++) {
 						/*for (int j = 0; j < allEffects.size(); j++){
 							int effind = stoi(allEffects[j]) - 1;
 							if (binaryProfiles[firstInstances[c]][effind])
@@ -686,7 +716,7 @@ int main(int argc, char* argv[]){
 							//log(1 - exp(factorPriors[factorsPerCombinationTopology[c][t][f].causeInd][factorsPerCombinationTopology[c][t][f].effectInds[e]]));
 					}
 
-					combPriors[c][t] = prior*alpha;
+					combPriors[c][t] = prior * alpha;
 					priorSum = SumTwoLogs(prior*alpha, priorSum);
 				}// index
 
@@ -694,22 +724,22 @@ int main(int argc, char* argv[]){
 					combPriors[c][t] = combPriors[c][t] - priorSum;
 			}// c
 
-			for (int c = 0; c < allCauses.size(); c++){
+			for (int c = 0; c < allCauses.size(); c++) {
 				causeCounts[c] = proposedCauseCounts[c];
 				discCauseCounts[c] = proposedDiscCauseCounts[c];
-				for (int e = 0; e < allEffects.size(); e++){
+				for (int e = 0; e < allEffects.size(); e++) {
 					factorPriors[c][e] = proposedFactorPriors[c][e];
 					//factorPriorsBar[c][e] = proposedFactorPriorsBar[c][e];
 				}
 			}
 			break;
 		}// if
-		
+
 		prevMargLogProb = currentMargLogProb;
-		for (int c = 0; c < allCauses.size(); c++){
+		for (int c = 0; c < allCauses.size(); c++) {
 			causeCounts[c] = proposedCauseCounts[c];
 			discCauseCounts[c] = proposedDiscCauseCounts[c];
-			for (int e = 0; e < allEffects.size(); e++){
+			for (int e = 0; e < allEffects.size(); e++) {
 				factorPriors[c][e] = proposedFactorPriors[c][e];
 				//factorPriorsBar[c][e] = proposedFactorPriorsBar[c][e];
 			}
@@ -718,24 +748,28 @@ int main(int argc, char* argv[]){
 
 
 	//// Outputs
+	ofstream outputTrees, outputFacts, outputPost;
+	outputTrees.open(outtrees);
+	outputFacts.open(outfacts);
+	outputPost.open(outpost);
 
 	// Output Factor Parameters
-	outputFacts << "Ancestors\tSupport\tSupport (Discont'd)\t";
+	outputFacts << "Ancestors\tSupport\t";
 	//outputTotFacts << "Ancestors\tSupport\t";
-	for (int e = 0; e < allEffects.size(); e++){
+	for (int e = 0; e < allEffects.size() - 1; e++) {
 		outputFacts << allEffects[e] << "\t";
 		//outputTotFacts << allEffects[e] << "\t";
 	}
-	outputFacts << endl;
+	outputFacts << allEffects[allEffects.size() - 1] << endl;
 	//outputTotFacts << endl;
-	for (int ca = 0; ca < allCauses.size(); ca++){
-		outputFacts << allCauses[ca] << "\t" << exp(causeCounts[ca]) << "\t" << exp(discCauseCounts[ca]) << "\t";
+	for (int ca = 0; ca < allCauses.size(); ca++) {
+		outputFacts << allCauses[ca] << "\t" << exp(causeCounts[ca]) << "\t" /*<< exp(discCauseCounts[ca]) << "\t"*/;
 		//outputTotFacts << allCauses[ca] << "\t" << exp(causeCounts[ca]) << "\t";
-		for (int e = 0; e < allEffects.size(); e++){
+		for (int e = 0; e < allEffects.size() - 1; e++) {
 			outputFacts << exp(factorPriors[ca][e]) << "\t";
 			//outputTotFacts << exp(factorPriors[ca][e] + factorPriorsBar[ca][e]) << "\t";
 		}
-		outputFacts << endl;
+		outputFacts << exp(factorPriors[ca][allEffects.size() - 1]) << endl;
 		//outputTotFacts << endl;
 	}
 
@@ -743,20 +777,20 @@ int main(int argc, char* argv[]){
 	cout << "Computing the maximum a posteriori trees..." << endl;
 
 	// Resetting the Factor Priors (not in log scale)
-	for (int c = 0; c < allCauses.size(); c++){
+	for (int c = 0; c < allCauses.size(); c++) {
 		causeCounts[c] = 0;
-		for (int e = 0; e < allEffects.size(); e++){
+		for (int e = 0; e < allEffects.size(); e++) {
 			factorPriors[c][e] = 0;
 		}
 	}
 
 	int* parentVector = new int[nc];
-	int** finalParentVectors = new int*[nr];
-	for (int k = 0; k < nr; k++){
+	int** finalParentVectors = new int*[nt];
+	for (int k = 0; k < nt; k++) {
 		int itemp;
 		SearchForTreeMax(currentParentVectors[k], mutCounts[k], cayleys[mutCounts[k] - 1], combPriors[combMapping[k]], allParentVecs[mutCounts[k] - 1], marginalProbs[k], itemp);
 
-		for (int f = 0; f < factorsPerCombinationTopology[combMapping[k]][itemp].size(); f++){
+		for (int f = 0; f < factorsPerCombinationTopology[combMapping[k]][itemp].size(); f++) {
 			causeCounts[factorsPerCombinationTopology[combMapping[k]][itemp][f].causeInd]++;
 			for (int e = 0; e < factorsPerCombinationTopology[combMapping[k]][itemp][f].effects.size(); e++)
 				factorPriors[factorsPerCombinationTopology[combMapping[k]][itemp][f].causeInd][factorsPerCombinationTopology[combMapping[k]][itemp][f].effectInds[e]]++;
@@ -769,7 +803,7 @@ int main(int argc, char* argv[]){
 		for (int i = 0; i < nc; i++)
 			if (!binaryProfiles[k][i])
 				for (int j = 0; j < nc; j++)
-					if (parentVector[j]>i)
+					if (parentVector[j] > i)
 						parentVector[j]++;
 		finalParentVectors[k] = new int[nc];
 		for (int i = 0; i < nc; i++)
@@ -777,24 +811,24 @@ int main(int argc, char* argv[]){
 	}
 
 	// Output the trees
-	for (int i = 0; i < nr; i++){
-		for (int j = 0; j < nc; j++)
+	for (int i = 0; i < nt; i++) {
+		for (int j = 0; j < nc - 1; j++)
 			outputTrees << finalParentVectors[i][j] << "\t";
-		outputTrees << endl;
+		outputTrees << finalParentVectors[i][nc - 1] << endl;
 	}
 
 
 	// Output Post Factor Parameters
 	outputPost << "Ancestors\tSupport\t";
-	for (int e = 0; e < allEffects.size(); e++){
+	for (int e = 0; e < allEffects.size() - 1; e++) {
 		outputPost << allEffects[e] << "\t";
 	}
-	outputPost << endl;
-	for (int ca = 0; ca < allCauses.size(); ca++){
+	outputPost << allEffects[allEffects.size() - 1] << endl;
+	for (int ca = 0; ca < allCauses.size(); ca++) {
 		outputPost << allCauses[ca] << "\t" << causeCounts[ca] << "\t";
-		for (int e = 0; e < allEffects.size(); e++){
+		for (int e = 0; e < allEffects.size() - 1; e++) {
 			outputPost << factorPriors[ca][e] << "\t";
 		}
-		outputPost << endl;
+		outputPost << factorPriors[ca][allEffects.size() - 1] << endl;
 	}
 }
