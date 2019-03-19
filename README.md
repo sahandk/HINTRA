@@ -21,19 +21,29 @@ Assume that the name of the dataset is `example`. Then, the input files include:
 55 201 100 100
 ```
 
-* `example.Vcounts`: This file contains variant read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the variant read count of a gene. The order of genes is consistent for all samples (lines). Below is an example corresponding to the above `example.Rcounts`:
+* `example.Vcounts`: This file contains variant read counts for tumor samples. Each line of this text file corresponds to a sample and is a sequence of integer values separated by tabs. Each value corresponds to the variant read count of a gene. The order of genes is consistent for all samples (lines). Below is an example corresponding to the above `example.Rcounts` file:
 
 ```
 10  0 25  50
 0 0 49 60
-25 33 11  6
+25 41 11  6
 0 35 0 0
 55 35 13 0
 ```
 
+* `example.Tids`: This file contains tumor IDs for samples. Each line of this text file contains an integer positive number corresponding to the ID of a tumor from which a sample is taken. The order of IDs should follow the same order as samples appear in the `example.Rcounts` and `example.Vcounts` files. The IDs should be starting from 1 and should be consecutive. In other words, the largest ID number is equal to the number of tumors. The samples should be ordered in the `example.Rcounts` and `example.Vcounts` files such that samples from each tumor are beside each other and they are sorted by the tumor ID number. Below is an example corresponding to the above `example.Rcounts` file:
+
+```
+1
+1
+2
+2
+3
+```
+
 * The folder `PhylogenySet`: This folder contains the set of all valid phylogenetic structures (i.e. structures without branching root node) for different numbers of mutations. It contains files named as `ParentVectors_K-?.txt`, where `?` indicates the number of mutations. Currently, this folder contains files for between 1 and 6 mutations. Larger topologies can be generated using the provided R code `TopologyEnumerator.R`. Each file contains one or more lines with each line representing a phylogenetic tree in the parent vector format (i.e. a sequence of numbers each indicating the parent of the corresponding node with 0 being the root node).
 
-* `example.margs` (if applicable): This file contains pre-processed marginal likelihood data for tumor samples. This will be used if available. Otherwise, Hintra will produce this file as described later. Each line of this tab-separated file is dedicated to one tumor and is a sequence of floating values. Each value is a marginal log-likelihood of a tree topology. The order of values follows the order of topologies provided in the folder `PhylogenySet`.
+* `example.margs` (if applicable): This file contains pre-processed marginal likelihood data for tumors (not samples). This will be used if available. Otherwise, Hintra will produce this file as described later. Each line of this tab-separated file is dedicated to one tumor and is a sequence of floating values. Each value is a marginal log-likelihood of a tree topology. The order of values follows the order of topologies provided in the folder `PhylogenySet`. The order of lines follows the order of tumor IDs (1, 2,...).
 
 * `example.maxs` (if applicable): Similar to `example.margs`, but contains maximal log-likelihoods.
 
