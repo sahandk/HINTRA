@@ -86,13 +86,13 @@ The command for using Hintra is as follows:
 
 *In Windows:* `Hintra-Win.exe [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
 
-*In Linux:*   `./Hintra-Lin [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
+*In Linux:* `./Hintra-Lin [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
 
 * `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files. This is useful when changing the `<delta>` parameter or when the content of the read count files changes without their names being changed.
 
-* `<path_to_input>` is the complete path to the input dataset. For example if the `example.Rcounts` and `example.Vcounts` files are in path `C:/Project/`, then `<path_to_input>` should be set to `C:/Project/example`. Please note that no extenion is used for this argument and the `.Rcounts` and `.Vcounts` files (as well as `.margs` and `.maxs` files if they are provided) should have the same name (e.g. `example`) and be in the same folder indicated by `<path_to_input>`.
+* `<path_to_input>` is the complete path to the input dataset. For example if the `example.Rcounts`, `example.Vcounts` and `example.Tids` files are in path `C:/Project/`, then `<path_to_input>` should be set to `C:/Project/example`. Please note that no extenion is used for this argument and the `.Rcounts`, `.Vcounts` and `.Tids` files (as well as `.margs` and `.maxs` files if they are provided) should have the same name (e.g. `example`) and be in the same folder indicated by `<path_to_input>`.
 
-* `<no_samples>` is the number of samples which is equal to the number of lines in the `.Rcounts` or `.Vcounts` files.
+* `<no_samples>` is the number of samples which is equal to the number of lines in the `.Rcounts`, `.Vcounts` or `.Tids` files.
 
 * `<no_genes>` is the number of genes which is equal to the number of elements in each line of the `.Rcounts` or `.Vcounts` files.
 
