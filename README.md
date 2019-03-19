@@ -84,9 +84,9 @@ on Linux. The `Hintra-Win.exe` file is the Windows executable produced with Visu
 
 The command for using Hintra is as follows:
 
-`./Hintra-<X> [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
+*In Windows:* `Hintra-Win.exe [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
 
-* `<X>` can be either `Lin` or `Win.exe` depending on operating system.
+*In Windows:* `./Hintra-Lin [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
 
 * `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files. This is useful when changing the `<delta>` parameter or when the content of the read count files changes without their names being changed.
 
