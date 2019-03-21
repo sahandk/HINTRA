@@ -76,17 +76,21 @@ Ancestors  Support   2     1     3     4
 
 ## Usage
 
-We provide both source code (`Hintra.cpp`) and executable files. The executable `Hintra-Lin` file is compiled using
+We provide both source code (`Hintra.cpp`) and executable files. To provide portability, the Linux executable `Hintra-Lin` file is compiled using *clang* compiler from [LLVM](https://llvm.org/) project as follows:
 
 `clang++ -std=c++11 -fopenmp -lm Hintra.cpp -o Hintra-Lin`
 
-on Linux. The `Hintra-Win.exe` file is the Windows executable produced with Visual Studio version 15. If any of these executables does not work on your system, you should compile the source code on your system. On Linux, if you do not have access to *clang*, you can replace `clang++` in the above command with `g++`, assuming that you have *g++* installed. *Please note that this code uses OpenMP API and this library should be linked (e.g. with `-fopenmp`) when compiling.*
+It can also be compiled using the following command:
+
+`g++ -std=c++11 -fopenmp -lm Hintra.cpp -o Hintra-Lin`
+
+The Windows executable `Hintra-Win.exe` is produced with Visual Studio version 15. If any of these executables does not work on your system, you should compile the source code on your system. On Linux, if you do not have access to *clang*, you can replace `clang++` in the above command with `g++`, assuming that you have *g++* installed. *Please note that this code uses OpenMP API and this library should be linked (e.g. with `-fopenmp`) when compiling.*
 
 The command for using Hintra is as follows:
 
-*In Windows:* `Hintra-Win.exe [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
-
 *In Linux:* `./Hintra-Lin [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
+
+*In Windows:* `Hintra-Win.exe [-u] <path_to_input> <no_samples> <no_genes> <delta> <EM_iterations> <no_cores>`
 
 * `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files. This is useful when changing the `<delta>` parameter or when the content of the read count files changes without their names being changed.
 
@@ -104,9 +108,9 @@ The command for using Hintra is as follows:
 
 **Example:**
 
-`./Hintra-Win.exe -u C:/Project/example 5 4 0.1 50 4`
-
 `./Hintra-Lin -u C:/Project/example 5 4 0.1 50 4`
+
+`./Hintra-Win.exe -u C:/Project/example 5 4 0.1 50 4`
 
 **Note: the `PhylogenySet` folder should be unzipped to the current working directory (the same folder as the executable in the above example).**
 
