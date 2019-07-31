@@ -112,4 +112,5 @@ The command for using Hintra is as follows:
 
 
 ## Reference
-{to be added}
+
+Sahand Khakabimamaghani, Salem Malikic, Jeffrey Tang, Dujian Ding, Ryan Morin, Leonid Chindelevitch, Martin Ester, Collaborative intra-tumor heterogeneity detection, _Bioinformatics_, Volume 35, Issue 14, July 2019, Pages i379–i388, https://doi.org/10.1093/bioinformatics/btz355
