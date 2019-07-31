@@ -90,7 +90,7 @@ The command for using Hintra is as follows:
 
 * `-u` is an optional argument and if used, it forces the program to recompute the `.margs` and `.maxs` files. This is useful when changing the `<delta>` parameter or when the content of the read count files changes without their names being changed.
 
-* `<path_to_input>` is the complete path to the input dataset. For example if the `example.Rcounts`, `example.Vcounts` and `example.Tids` files are in path `C:/Project/`, then `<path_to_input>` should be set to `C:/Project/example`. Please note that no extenion is used for this argument and the `.Rcounts`, `.Vcounts` and `.Tids` files (as well as `.margs` and `.maxs` files if they are provided) should have the same name (e.g. `example`) and be in the same folder indicated by `<path_to_input>`.
+* `<path_to_input>` is the complete path to the input dataset excluding the file extension. For example if the `example.Rcounts`, `example.Vcounts` and `example.Tids` files are in path `C:/Project/`, then `<path_to_input>` should be set to `C:/Project/example`. Please note that no extenion is used for this argument and the `.Rcounts`, `.Vcounts` and `.Tids` files (as well as `.margs` and `.maxs` files if they are provided) should have the same name (`example` in this case) and be in the same folder indicated in `<path_to_input>` (`C:/Project/` in this case).
 
 * `<no_samples>` is the number of samples which is equal to the number of lines in the `.Rcounts`, `.Vcounts` or `.Tids` files.
 
